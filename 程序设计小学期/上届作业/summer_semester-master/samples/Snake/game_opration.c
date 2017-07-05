@@ -2,7 +2,7 @@
 /************** 头文件 ****************/
 #include <Windows.h>
 #include "snake.h"
-
+int flag=0;
 /************** 宏定义 ****************/
 // 计时器ID。
 #define TIMER_ID 12340
@@ -35,6 +35,21 @@ BOOL SpeedUp(HWND hwnd)
 {
 	// 调整计时器到时时间
 	dwTimerElapse = (DWORD)(dwTimerElapse * dbLevelSpeedupRatio);
+	/*KillTimer(hwnd, TIMER_ID);
+	SetTimer(hwnd, TIMER_ID, dwTimerElapse, NULL);*/
+	return TRUE;
+}
+BOOL Stop(HWND hwnd)
+{
+	flag=dwTimerElapse;
+	dwTimerElapse = (DWORD)((dwTimerElapse * dbLevelSpeedupRatio)*100);
+	KillTimer(hwnd, TIMER_ID);
+	SetTimer(hwnd, TIMER_ID, dwTimerElapse, NULL);
+	return TRUE;
+}
+BOOL Goon(HWND hwnd)
+{
+	dwTimerElapse = (DWORD)(flag);
 	KillTimer(hwnd, TIMER_ID);
 	SetTimer(hwnd, TIMER_ID, dwTimerElapse, NULL);
 	return TRUE;
@@ -100,7 +115,7 @@ void OnTimer(HWND hwnd)
 
 // 当用于操作时进行的逻辑处理。
 // 本游戏只使用到了键盘上下左右键控制。
-void OnKeyDown(DWORD vk)
+void OnKeyDown(DWORD vk,HWND hwnd)
 {
 	switch (vk) // virtual key value
 	{
@@ -115,6 +130,20 @@ void OnKeyDown(DWORD vk)
 		break;
 	case VK_DOWN:
 		SetDirction(SNAKE_DOWN);
+		break;
+	case VK_SPACE:
+		OnTimer(hwnd);
+		break;
+	case VK_ESCAPE:
+		if(!flag)
+		{
+			Stop(hwnd);
+		}
+		else
+		{
+			Goon(hwnd);
+			flag=0;
+		}
 		break;
 	}
 	return;
@@ -139,7 +168,7 @@ void CreateGame(HWND hwnd, // 主窗口句柄
 	srand(ft.dwLowDateTime);
 
 	dbLevelSpeedupRatio = level_speedup_ratio;
-	dwTimerElapse = dwInitTimerElapse/2;
+	dwTimerElapse = dwInitTimerElapse;
 	dwOneLevelScores = one_level_scores;
 
 	// 设置游戏的边界

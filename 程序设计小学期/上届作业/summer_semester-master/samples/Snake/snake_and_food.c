@@ -120,8 +120,8 @@ void CreateSnake(dirction dir, int head_x, int head_y, int init_len)
 
 	p = (PGAME_COORD)malloc(sizeof(GAME_COORD));
 	// 蛇头部的初始位置；
-	p->x = head_x+rand()%(boundary.x/2);
-	p->y = head_y+rand()%(boundary.y/2);
+	p->x = head_x;
+	p->y = head_y;
 	ListPushFront(snake_list, p);
 
 	for (i = 1; i < init_len; i++)

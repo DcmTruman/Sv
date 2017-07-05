@@ -90,4 +90,4 @@ void CreateGame(HWND hwnd,
 	int init_len,
 	dirction init_dir);
 void OnTimer(HWND hwnd);
-void OnKeyDown(DWORD vk);
+void OnKeyDown(DWORD vk,HWND hwnd);

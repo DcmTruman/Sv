@@ -6,7 +6,7 @@
 #define CELL_PIXEL			20
 
 // 用来绘图的颜色
-#define COLOR_SNAKE			RGB(0xEE, 0x5c, 0x42)
+#define COLOR_SNAKE			RGB(193, 205, 205)
 #define COLOR_FOOD			RGB(153, 255, 51)
 #define COLOR_BOUNDARY		RGB(139, 134, 130)
 #define COLOR_TEXT			RGB(173,216,230)
@@ -16,8 +16,8 @@
 #define	ONE_LEVELS_SCORES	5	// 每升级一次需要的计分
 #define INIT_SNAKE_LEN		5	// 蛇的长度
 #define SPEEDUP_RATIO		0.8 // 升级以后时间周期（确定游戏速度）提高的比例。
-#define MAX_X		36// 游戏界面大小
-#define MAX_Y		30	// 游戏界面大小
+#define MAX_X		18	// 游戏界面大小
+#define MAX_Y		20	// 游戏界面大小
 #define INIT_X		3	// 蛇的初始位置
 #define INIT_Y		3	// 蛇的初始位置
 #define INIT_DIR	SNAKE_LEFT	// 蛇的初始方向
@@ -262,7 +262,7 @@ void GamePaint(HWND hwnd)
 
 	// 创建需要用到的PEN和BRUSH
 	hbrushFood = CreateSolidBrush(COLOR_FOOD); // RGB颜色，实心BRUSH
-	hpen = CreatePen(PS_NULL, 0, RGB(0, 0, 0));  // PEN， PS_NULL表示不可见
+	hpen = CreatePen(PS_DASH, 3, RGB(5, 5, 5));  // PEN， PS_NULL表示不可见
 	hBrushSnake = CreateSolidBrush(COLOR_SNAKE);
 	hPenBoundary = CreatePen(0, 3, COLOR_BOUNDARY);
 
@@ -324,7 +324,6 @@ void GamePaint(HWND hwnd)
 	LineTo(hdcmem, rectBoundary.right, rectBoundary.bottom);
 	LineTo(hdcmem, rectBoundary.right, rectBoundary.top);
 	LineTo(hdcmem, rectBoundary.left, rectBoundary.top);
-
 	/*******************************************************************************
 	* #############  写一行字  ################
 	*
@@ -386,10 +385,10 @@ void ReSizeGameWnd(HWND hwnd)
 	PGAME_COORD pCoordBoundary = GetBoundary();
 
 	// 设置游戏边界
-	rectBoundary.left = 10;
-	rectBoundary.top = 10;
-	rectBoundary.right = 10 + CELL_PIXEL*(pCoordBoundary->x + 1);
-	rectBoundary.bottom = 10 + CELL_PIXEL*(pCoordBoundary->y + 1);
+	rectBoundary.left = 20;
+	rectBoundary.top = 20;
+	rectBoundary.right = 20 + CELL_PIXEL*(pCoordBoundary->x + 1);
+	rectBoundary.bottom = 20 + CELL_PIXEL*(pCoordBoundary->y + 1);
 
 	// 计算上下左右角的位置
 	ptLeftTop.x = rectBoundary.left;
@@ -494,7 +493,7 @@ LONG CALLBACK MainWndProc(
 
 	case WM_KEYDOWN:
 
-		OnKeyDown(wParam);
+		OnKeyDown(wParam,hwnd);
 		GamePaint(hwnd);
 		break;
 
